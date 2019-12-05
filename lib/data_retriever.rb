@@ -1,22 +1,20 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'uri'
+require 'json'
+require_relative 'request_builder'
 
 module DataRetriever
-  def workspaces
-    uri = URI.parse('https://api.clockify.me/api/v1/workspaces')
-    request = Net::HTTP::Get.new(uri)
-    request.content_type = 'application/json'
-    request['X-Api-Key'] = ENV['API_KEY']
+  include RequestBuilder
 
-    req_options = {
-      use_ssl: uri.scheme == 'https'
-    }
-
-    Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
+  def workspaces(opts = {})
+    if !(File.file? './data/workspaces.json') || opts[:reload]
+      puts 'retrieving workspaces from API'
+      response = RequestBuilder.new_get_request '/workspaces'
+      File.open('./data/workspaces.json', 'w') { |file| file.puts response.body }
     end
+
+    file = File.open('./data/workspaces.json', 'r')
+    JSON.load file
   end
 
   def projects(workspace); end
