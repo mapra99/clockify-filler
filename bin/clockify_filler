@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'dotenv/load'
+require_relative '../lib/data_retriever'
+
+# Data Retriever
+include DataRetriever
+puts "\nStarting...\n"
+
+
+# Selecting Workspace
+workspaces = DataRetriever.workspaces reload: true
+puts "Option\tWorkspace"
+i = 1
+workspaces.each do |w|
+  puts "#{i}\t#{w['name']}"
+  i += 1
+end
+print "Select a Workspace: "
+option = gets.chomp.to_i
+selected_workspace = workspaces[option - 1]
+puts "\nSelected #{selected_workspace["name"]}"
+
+
+workspace_projects = DataRetriever.projects workspace_id: selected_workspace["id"], reload: true
+puts "Option\tProject"
+i = 1
+workspace_projects.each do |p|
+  puts "#{i}\t#{p['name']}"
+  i += 1
+end
+print "Select a Project: "
+option = gets.chomp.to_i
+selected_project = workspace_projects[option - 1]
+puts "\nSelected #{selected_project["name"]}"
