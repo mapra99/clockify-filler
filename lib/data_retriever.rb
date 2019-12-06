@@ -7,7 +7,7 @@ module DataRetriever
   include RequestBuilder
 
   def workspaces(opts = {})
-    Dir.mkdir("./data") unless File.exist?('./data')
+    Dir.mkdir('./data') unless File.exist?('./data')
     file_path = './data/workspaces.json'
 
     if !(File.file? file_path) || opts[:reload]
