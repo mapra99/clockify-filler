@@ -2,9 +2,11 @@
 
 require 'dotenv/load'
 require_relative '../lib/data_retriever'
+require_relative '../lib/new_entries'
 
 # Data Retriever
 include DataRetriever
+include NewEntries
 puts "\nStarting...\n"
 
 
@@ -33,3 +35,17 @@ print "Select a Project: "
 option = gets.chomp.to_i
 selected_project = workspace_projects[option - 1]
 puts "\nSelected #{selected_project["name"]}"
+
+puts "\nCreating new repeated Tasks Group"
+print "Task Description: "
+description = gets.chomp
+print "Start Date (YYYY-MM-DD): "
+start_date = gets.chomp
+print "End Date (YYYY-MM-DD): "
+end_date = gets.chomp
+print "Start Time (HH:MM): "
+start_time = gets.chomp
+print "End Time (HH:MM): "
+end_time = gets.chomp
+
+NewEntries.time_entry(start_date, end_date, start_time, end_time, description, selected_project['id'], selected_workspace['id'])
