@@ -2,3 +2,5 @@
 .env
 /temp/*
 /data/**
+*.byebug_history
+.byebug_history
